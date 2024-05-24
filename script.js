@@ -15,6 +15,8 @@ document.addEventListener('DOMContentLoaded', function() {
             var panel = document.createElement('div');
             panel.className = 'panel';
 
+            // Create and append the labels and inputs
+
             var firstNameLabel = document.createElement('label');
             firstNameLabel.textContent = 'First Name:';
             panel.appendChild(firstNameLabel);
