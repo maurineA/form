@@ -1,4 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
+    const existingEmails = ['test1@example.com', 'test2@example.com']; // Replace with actual existing emails
+    const existingContacts = ['1234567890', '0987654321']; // Replace with actual existing contacts
+
     var familyMembersInput = document.getElementById('familyMembers');
 
     familyMembersInput.addEventListener('change', function () {
@@ -100,5 +103,38 @@ document.addEventListener('DOMContentLoaded', function() {
                 event.target.setCustomValidity('');
             }
         }
+    });
+
+    const form = document.forms['submit-to-google-sheet'];
+    const msg = document.getElementById("msg");
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        var email = document.getElementById('email').value;
+        var contact = document.getElementById('contact').value;
+
+        if (existingEmails.includes(email)) {
+            msg.innerHTML = "This email already exists. Please enter a new email.";
+            return;
+        }
+
+        if (existingContacts.includes(contact)) {
+            msg.innerHTML = "This contact already exists. Please enter a new contact.";
+            return;
+        }
+
+        fetch('https://script.google.com/macros/s/AKfycbwk9hjlt1YimQxphU-Eos0bFlQbAHIi8Z8vdrkGvCXLdbtE-3FACSLtTs6PDlAOC1SK/exec', { 
+            method: 'POST', 
+            body: new FormData(form)
+        })
+        .then(response => {
+            msg.innerHTML = "Successfully sent";
+            setTimeout(function() {
+                msg.innerHTML = "";
+            }, 5000);
+            form.reset();
+        })
+        .catch(error => console.error('Error!', error.message));
     });
 });
