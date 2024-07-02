@@ -10,18 +10,17 @@ body {
 }
 
 #formdetails {
-    width: 50%; 
+    width: 50%;
     background: #fff;
-    padding: 15px; 
+    padding: 15px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
-    margin: 20px; 
+    margin: 20px;
 }
 
 .container {
     width: 100%;
     padding: 5px;
-   
 }
 
 h2 {
@@ -36,16 +35,33 @@ form {
     margin-top: 10px;
 }
 
-label {
-    font-size: 1rem;
-    color: #333;
-    margin-bottom: 5px;
-}
-
 input[type="text"],
 input[type="email"],
-input[type="number"] {
-    width: calc(100% - 20px); /* Ensures fields don't touch the right edge */
+input[type="number"],
+input[type="number"],
+input[type="tel"],
+input[type="date"],
+input[type="radio"],
+input[type="tel"].adult {
+    width: calc(100% - 20px);
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    color: #999; /* Placeholder color */
+}
+
+input::placeholder {
+    color: #999; /* Placeholder color */
+}
+
+#birthday-container {
+    display: flex;
+    gap: 5px;
+}
+
+#birthday-container input {
+    width: calc(50% - 10px); /* Equal space for both inputs */
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -57,7 +73,7 @@ input[type="number"] {
     color: black;
     cursor: pointer;
     padding: 18px;
-    width: calc(100% - 20px); /* Ensures accordion doesn't touch the right edge */
+    width: calc(100% - 20px);
     border: none;
     text-align: left;
     outline: none;
@@ -80,7 +96,7 @@ input[type="number"] {
 }
 
 button[type="submit"] {
-    width: 50%; 
+    width: 50%;
     padding: 10px;
     border: none;
     border-radius: 4px;
@@ -89,7 +105,7 @@ button[type="submit"] {
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.3s;
-    margin: 0 auto; 
+    margin: 0 auto;
     display: block;
 }
 
@@ -97,7 +113,7 @@ button[type="submit"]:hover {
     background-color: #000a01;
 }
 
-#msg{
+#msg {
     color: #61b752;
     margin-bottom: 30px;
     display: block;
