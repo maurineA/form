@@ -127,6 +127,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         birthdayInput.name = 'familyMember' + (i + 1) + 'Birthdate';
                         birthdayInput.placeholder = 'Birthdate';
                         birthdayInput.required = true;
+                        birthdayInput.className = 'adult';
                         panel.appendChild(birthdayInput);
 
                         $(birthdayInput).datepicker({
