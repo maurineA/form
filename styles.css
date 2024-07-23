@@ -54,6 +54,7 @@ input[type="tel"] {
     width: 100%; /* Ensure phone inputs span the full width */
     border-radius: 4px;
 }
+
 input::placeholder {
     color: #999; /* Placeholder color */
 }
@@ -123,19 +124,10 @@ button[type="submit"]:hover {
     width: 100%;
 }
 
-input[type="email"],
-input[type="tel"],
-input[type="date"] {
-    width: calc(100% 0px);
-}
-
-input[type="date"].adult {
-    margin-top: 10px;
-}
-
-.adult {
-    width: calc(100% - 20px);
-    margin-top: 15px;
+.phoneAndBirthdate {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Adjust the gap as needed */
 }
 
 @media (max-width: 600px) {

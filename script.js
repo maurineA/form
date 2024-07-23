@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 var contactInput = document.createElement('input');
                 contactInput.type = 'tel';
                 contactInput.name = 'familyMember' + (i + 1) + 'Phone';
-                contactInput.placeholder = 'Phone';
+                contactInput.placeholder = 'Phone Number';
                 contactInput.required = true;
                 emailContactDiv.appendChild(contactInput);
 
