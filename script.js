@@ -229,6 +229,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
         fetch("https://script.google.com/macros/s/AKfycbwASaIRUq10RvldssU1d9zRFnYAevvU66rQpf_egYCbmrOrPk4_4_uR84HuuEpnf9dTug/exec", {
             method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
             body: json,
         })
         .then((response) => {
