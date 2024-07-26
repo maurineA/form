@@ -227,7 +227,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const json = JSON.stringify(formObject);
 
-        fetch("https://script.google.com/macros/s/AKfycbwASaIRUq10RvldssU1d9zRFnYAevvU66rQpf_egYCbmrOrPk4_4_uR84HuuEpnf9dTug/exec", {
+        fetch("https://script.google.com/macros/s/AKfycbw66Pd8wa3NgYcCVkJN3OUIDfiyJTOoo_TpmASvtNVu_ftC1CLIJ551wtIgxHbuM97P/exec", {
             method: "POST",
             body: json,
         })
