@@ -206,51 +206,44 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    const form = document.forms['submit-to-google-sheet'];
+    const form = document.getElementById("familyForm");
 
-    form.addEventListener('submit', e => {
+    form.addEventListener("submit", function (e) {
         e.preventDefault();
 
-        const emailInputs = form.querySelectorAll('input[type="email"]');
-        const contactInputs = form.querySelectorAll('input[type="tel"]');
-
-        var emailSet = new Set([...existingEmails]);
-        var contactSet = new Set([...existingContacts]);
-
-        for (var emailInput of emailInputs) {
-            if (emailSet.has(emailInput.value)) {
-                alert('Duplicate email found: ' + emailInput.value);
-                return;
-            } else {
-                emailSet.add(emailInput.value);
-            }
-        }
-
-        for (var contactInput of contactInputs) {
-            const iti = window.intlTelInputGlobals.getInstance(contactInput);
-            const fullPhoneNumber = iti.getNumber(); // Get the full phone number including country code
-
-            if (contactSet.has(fullPhoneNumber)) {
-                alert('Duplicate contact found: ' + fullPhoneNumber);
-                return;
-            } else {
-                contactSet.add(fullPhoneNumber);
-                contactInput.value = fullPhoneNumber; // Update the contact input value to the full phone number
-            }
-        }
-
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbwASaIRUq10RvldssU1d9zRFnYAevvU66rQpf_egYCbmrOrPk4_4_uR84HuuEpnf9dTug/exec';
         const formData = new FormData(form);
+        const email = formData.get("email");
+        const contact = formData.get("contact");
 
-        fetch(scriptURL, { method: 'POST', body: formData })
-            .then(response => {
-                if (response.ok) {
-                    alert('Form submitted successfully!', response);
-                    form.reset();
-                } else {
-                    alert('Error!', response);
-                }
-            })
-            .catch(error => alert('There was an error submitting the form.', error.message));
+        if (existingEmails.has(email) || existingContacts.has(contact)) {
+            alert("This email or contact already exists. Please use a different email or contact.");
+            return;
+        }
+
+        const formObject = {};
+        formData.forEach((value, key) => {
+            formObject[key] = value;
+        });
+
+        const json = JSON.stringify(formObject);
+
+        fetch("https://script.google.com/macros/s/AKfycbwASaIRUq10RvldssU1d9zRFnYAevvU66rQpf_egYCbmrOrPk4_4_uR84HuuEpnf9dTug/exec", {
+            method: "POST",
+            body: json,
+        })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then((data) => {
+            console.log("Form submitted successfully");
+            console.log(data);
+            form.reset();
+        })
+        .catch((error) => {
+            console.error("There was a problem with the fetch operation:", error);
+        });
     });
 });
