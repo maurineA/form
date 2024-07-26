@@ -206,44 +206,51 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    const form = document.getElementById("familyForm");
+    const form = document.forms['submit-to-google-sheet'];
 
-    form.addEventListener("submit", function (e) {
+    form.addEventListener('submit', e => {
         e.preventDefault();
 
-        const formData = new FormData(form);
-        const email = formData.get("email");
-        const contact = formData.get("contact");
+        const emailInputs = form.querySelectorAll('input[type="email"]');
+        const contactInputs = form.querySelectorAll('input[type="tel"]');
 
-        if (existingEmails.has(email) || existingContacts.has(contact)) {
-            alert("This email or contact already exists. Please use a different email or contact.");
-            return;
+        var emailSet = new Set([...existingEmails]);
+        var contactSet = new Set([...existingContacts]);
+
+        for (var emailInput of emailInputs) {
+            if (emailSet.has(emailInput.value)) {
+                alert('Duplicate email found: ' + emailInput.value);
+                return;
+            } else {
+                emailSet.add(emailInput.value);
+            }
         }
 
-        const formObject = {};
-        formData.forEach((value, key) => {
-            formObject[key] = value;
-        });
+        for (var contactInput of contactInputs) {
+            const iti = window.intlTelInputGlobals.getInstance(contactInput);
+            const fullPhoneNumber = iti.getNumber(); // Get the full phone number including country code
 
-        const json = JSON.stringify(formObject);
-
-        fetch("https://script.google.com/macros/s/AKfycbwASaIRUq10RvldssU1d9zRFnYAevvU66rQpf_egYCbmrOrPk4_4_uR84HuuEpnf9dTug/exec", {
-            method: "POST",
-            body: json,
-        })
-        .then((response) => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok ' + response.statusText);
+            if (contactSet.has(fullPhoneNumber)) {
+                alert('Duplicate contact found: ' + fullPhoneNumber);
+                return;
+            } else {
+                contactSet.add(fullPhoneNumber);
+                contactInput.value = fullPhoneNumber; // Update the contact input value to the full phone number
             }
-            return response.json();
-        })
-        .then((data) => {
-            console.log("Form submitted successfully");
-            console.log(data);
-            form.reset();
-        })
-        .catch((error) => {
-            console.error("There was a problem with the fetch operation:", error);
-        });
+        }
+
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwASaIRUq10RvldssU1d9zRFnYAevvU66rQpf_egYCbmrOrPk4_4_uR84HuuEpnf9dTug/exec';
+        const formData = new FormData(form);
+
+        fetch(scriptURL, { method: 'POST', body: formData })
+            .then(response => {
+                if (response.ok) {
+                    alert('Form submitted successfully!', response);
+                    form.reset();
+                } else {
+                    alert('Error!', response);
+                }
+            })
+            .catch(error => alert('There was an error submitting the form.', error.message));
     });
 });
